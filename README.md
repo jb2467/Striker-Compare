@@ -38,61 +38,74 @@ The algorithm will allow the user to control how much the algorithm values:
 Total stats, Per 90/% stats (add to 1), and Playmaking stats, Scoring stats (add to 1)
 
 ## MATH of algorithm
-Let: 
-s = How much you value scoring as a fraction (out of 100)
-p = How much you value playmaking as a fraction (out of 100)
-s+p=1
+- Let: 
+  - s = How much you value scoring as a fraction (out of 100)
+  - p = How much you value playmaking as a fraction (out of 100)
+  - s+p=1
 
-t = How much you value the total stats as a fraction (out of 100)
-n = how much you value the per 90s/% stats as a fraction (out of 100)
-t + n
-For total:
-Let: 
-a = ast
-b = shot creation (playmaking)
-c = progressive passing distance 
+  - t = How much you value the total stats as a fraction (out of 100)
+  - n = how much you value the per 90s/% stats as a fraction (out of 100)
+  - t + n = 1
 
-d = goals
-e = shots on target
-f = shot creation (scoring)
-
-Each shooting variable will be the same value as each other (a = b = c)
-Each playmaking variable will be the same value as each other (d = e = f)
-
-a + b + c + d + e + f = t or n (depending if we're calculating the total stats or per90/% stats)
 ### For total stats
-a + b + c = t * p
-d + e + f = t * s
-3a = t * p
-3d = t * s
-a = (t * p)/3
-d = (t * s)/3
 
-'a' represents the max a total playmaking stat can be worth of the player's overall _Beans_ rating. 
-'d' represents the max a total shooting stat can be worth of the player's overall _Beans_ rating. 
+  - Let: 
+  - a = ast
+  - b = shot creation (playmaking)
+  - c = progressive passing distance 
+  - 
+  - d = goals
+  - e = shots on target
+  - f = shot creation actions (scoring)
+
+  - Each shooting variable will be the same value as each other (a = b = c)
+  - Each playmaking variable will be the same value as each other (d = e = f)
+  - a + b + c + d + e + f = t
+
+  - a + b + c = t * p
+  - d + e + f = t * s
+  - 3a = t * p
+  - 3d = t * s
+  - a = (t * p)/3
+  - d = (t * s)/3
+
+  - 'a' represents the max a total playmaking stat can be worth of the player's overall _Beans_ rating. 
+  - 'd' represents the max a total shooting stat can be worth of the player's overall _Beans_ rating. 
 
 ### For per90/% stats
-a + b + c = n * p
-d + e + f = n * s
-3a = n * p
-3d = n * s
-a = (n * p)/3
-d = (n * s)/3
+  - Let: 
+  - a = ast per 90
+  - b = shot creation per 90 (playmaking)
+  - c = Pass completion %
+  - 
+  - d = goals per 90
+  - e = shots on target %
+  - f = shot creation action per 90(scoring)
 
-'a' represents the max a Per90/% playmaking stat can be worth of the player's overall _Beans_ rating. 
-'d' represents the max a Per90/% shooting stat can be worth of the player's overall _Beans_ rating. 
+  - Each shooting variable will be the same value as each other (a = b = c)
+  - Each playmaking variable will be the same value as each other (d = e = f)
+  - a + b + c + d + e + f = n
 
-The league's leader in a stat earns the value of 'a' or 'b'
-The league's second leader in a stat will earn the value of ('a' or 'b') *  ((Total number of forwards -1)/Total Number of forwards)
-The league's third leader in a stat will earn the value of ('a' or 'b')*  ((Total number of forwards -2)/Total Number of forwards)
-etc.
+  - a + b + c = n * p
+  - d + e + f = n * s
+  - 3a = n * p
+  - 3d = n * s
+  - a = (n * p)/3
+  - d = (n * s)/3
+
+  - 'a' represents the max a per90/% playmaking stat can be worth of the player's overall _Beans_ rating. 
+  - 'd' represents the max a per90/% shooting stat can be worth of the player's overall _Beans_ rating. 
+#### How Beans are given out
+  - The league's leader in a stat earns the value of 'a' or 'b'
+  - The league's second leader in a stat will earn the value of ('a' or 'b') *  ((Total number of forwards -1)/Total Number of forwards)
+  - The league's third leader in a stat will earn the value of ('a' or 'b')*  ((Total number of forwards -2)/Total Number of forwards)
+  - etc.
 #### If multiple players have the same amount of goals they will earn the same amount of _Beans_ rating
-So if Legues has 4 players and player 1 has 20 assists, player 2 has 15 assists, player 3 has 15 assists, player 4 has 2 assists
-Player 1 earns 'a' or 'b'  amount for that stat
-Player 2 earns ('a' or 'b') *  ((4 -1)/4) = ('a' or 'b') * 3/4
-Player 3 earns ('a' or 'b') *  ((4 -1)/4) = ('a' or 'b') * 3/4
-Player 4 earns ('a' or 'b') *  ((4 - 3)/4) = ('a' or 'b') * 1/4 
-(this will be 1/4 because player 4 is technically the 4th highest goal scorer. Goes 1st, 2nd, 2nd, 4th)
+- So if the league has 4 players and player 1 has 20 assists, player 2 has 15 assists, player 3 has 15 assists, player 4 has 2 assists
+  - Player 1 earns 'a' or 'b'  amount for that stat
+  - Player 2 earns ('a' or 'b') *  ((4 -1)/4) = ('a' or 'b') * 3/4
+  - Player 3 earns ('a' or 'b') *  ((4 -1)/4) = ('a' or 'b') * 3/4
+  - Player 4 earns ('a' or 'b') *  ((4 - 3)/4) = ('a' or 'b') * 1/4 (this will be 1/4 because player 4 is technically the 4th highest goal scorer. Goes 1st, 2nd, 2nd, 4th)
 
 #### If a Player is on multiple squads in one season
 If this is the case, the player's total stats will be added and the per90 and % stats will be added and recalculated based off the minutes, total attempts and completed attempts
