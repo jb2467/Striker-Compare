@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup, Comment
 import sqlite3
 
-def scrap_stats():
+def scrap_stats(total_stats_values , per90_stats_values, playmaking_stats_values ,shooting_stats_values):
     con = sqlite3.connect('Forward_Stats.db')
     cur = con.cursor()
 
