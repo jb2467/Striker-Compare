@@ -7,32 +7,32 @@ The users running the program will be able to select how much they value the tot
 
 # Calculating the algorithm (_Beans_)
 These stats will be used to make an algorithm based on these stats:
-  Total goals
-  Total Assists
-  Total Shots on target
-  Total progressive passing distance
-  Total shot creation actions
-  Shot on target %
-  Shot creation actions per 90 minutes
-  Goals per 90 minutes
-  Assits per 90 minutes
-  Pass completions per 90 minutes
+  - Total goals
+  - Total Assists
+  - Total Shots on target
+  - Total progressive passing distance
+  - Total shot creation actions
+  - Shot on target %
+  - Shot creation actions per 90 minutes
+  - Goals per 90 minutes
+  - Assits per 90 minutes
+  - Pass completions per 90 minutes
 These total Per 90/% will be broken into two categories (Playmaking and Shooting)
-  Planking:
-    Total Assists
-    Total progressive passing distance
-    Total shot creation actions
-    Shot creation actions per 90 minutes
-    Assits per 90 minutes
-    Pass completions per 90 minutes
-  Shooting: 
-    Total goals
-    Total Shots on target
-    Total shot creation actions
-    Shot on target %
-    Shot creation actions per 90 minutes
-    Goals per 90 minutes
-  Shot creation actions (total and per 90) will count as both playmaking and shooting. This is because this stat takes into the playmaking leading up to the shot as well as the shot
+  - Planking:
+    - Total Assists
+    - Total progressive passing distance
+    - Total shot creation actions
+    - Shot creation actions per 90 minutes
+    - Assits per 90 minutes
+    - Pass completions per 90 minutes
+  - Shooting: 
+    - Total goals
+    - Total Shots on target
+    - Total shot creation actions
+    - Shot on target %
+    - Shot creation actions per 90 minutes
+    - Goals per 90 minutes
+Shot creation actions (total and per 90) will count as both playmaking and shooting. This is because this stat takes into the playmaking leading up to the shot as well as the shot
 
 The algorithm will allow the user to control how much the algorithm values:
 Total stats, Per 90/% stats (add to 1), and Playmaking stats, Scoring stats (add to 1)
