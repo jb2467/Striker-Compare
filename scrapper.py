@@ -68,5 +68,6 @@ def scrap_stats(total_stats_values , per90_stats_values, playmaking_stats_values
             Players.append(tuple(tempvar_stats))
     cur.executemany("INSERT OR REPLACE INTO stats VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                     Players)
+    print("Lets goooo")
     con.commit()
     con.close()
