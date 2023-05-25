@@ -79,6 +79,8 @@ def scrap_stats(total_stats_values , per90_stats_values, playmaking_stats_values
                 # give Players a tuple of the stats which will be through th eplayers class
     tup = previous_player.ready_to_push()
     Players.append(tup)
+    new_list = sorted(Players, key=lambda x: x[7])
+    print(new_list)
     cur.executemany("INSERT OR REPLACE INTO stats VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                     Players)
     con.commit()

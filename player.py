@@ -63,8 +63,7 @@ class Player:
             if other_player.squad not in self.squad:
                 self.squad = self.squad + ', ' + other_player.squad
             # all of the new stats from the other team(s) they played for
-            tempMins = int(self.minutes_played) + int(other_player.minutes_played)
-            self.minutes_played = str(tempMins)
+            self.minutes_played = int(self.minutes_played) + int(other_player.minutes_played)
             self.goals += other_player.goals
             self.assits += other_player.assits
             self.shots_on_target += other_player.shots_on_target
