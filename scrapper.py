@@ -1,11 +1,11 @@
 import requests
 from bs4 import BeautifulSoup, Comment
 import sqlite3
+from player import Player
 
 def scrap_stats(total_stats_values , per90_stats_values, playmaking_stats_values ,shooting_stats_values):
     con = sqlite3.connect('Forward_Stats.db')
     cur = con.cursor()
-
     # Make the table with only these slots
     cur.execute('''CREATE TABLE IF NOT EXISTS stats(Player text PRIMARY KEY,Nation text,Pos text, Squads text,Age text,
     Born text, Mins Integer, Gls Integer, Ast Integer,  total_shots Integer, SoT Integer,  SCA Integer, pass_completions Integer, 
@@ -35,11 +35,10 @@ def scrap_stats(total_stats_values , per90_stats_values, playmaking_stats_values
         shooting_soup_URL.select_one('#all_stats_shooting').find_next(text=lambda x: isinstance(x, Comment)), 'html.parser') #type: ignore
 
 
-
-    # Total number of forwards
-    num_of_forwards = 0
     # The whole player (Forwards only) data base stats
     Players = []
+    previous_player = None
+    current_player = None
     '''
     this gets Name, Nation, position, Squad, Age, birth year, minutes, goals, assits, total shots, 
     shots on target, shot creation actions, progressive passing distance, pass completions, and pass attempts and
@@ -51,8 +50,7 @@ def scrap_stats(total_stats_values , per90_stats_values, playmaking_stats_values
         passing_tds= [td.get_text(strip=True) for td in passing.select('td')]
         # Each players' individual stats
         tempvar_stats = []
-        if ( 'FW' in standard_tds[2]):
-            num_of_forwards += 1    
+        if ( 'FW' in standard_tds[2] ):
             for i in range(0,6):
                 tempvar_stats.append(standard_tds[i]) # Name, Nation, position, Squad, Age, birth year
             tempvar_stats.append(standard_tds[8]) # Minutes
@@ -64,10 +62,24 @@ def scrap_stats(total_stats_values , per90_stats_values, playmaking_stats_values
             tempvar_stats.append(passing_tds[7]) # Completed passes
             tempvar_stats.append(passing_tds[8] ) #  Pass attempts
             tempvar_stats.append(passing_tds[11]) # Progressive passing distance
-            tempvar_stats.append(0) # My rating (Beans)
-            Players.append(tuple(tempvar_stats))
+
+            current_player = Player(tempvar_stats)
+            if previous_player == None:
+                previous_player = Player(tempvar_stats)
+                tup = previous_player.ready_to_push()
+                Players.append(tup)
+            elif previous_player.equals(current_player):
+                previous_player.add_new_stats(current_player)
+            else:
+                tup = previous_player.ready_to_push()
+                Players.append(tup)
+                previous_player = current_player
+                # if it is a new player
+                # give players a list isntead of 16 ints and strs
+                # give Players a tuple of the stats which will be through th eplayers class
+
+
     cur.executemany("INSERT OR REPLACE INTO stats VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                     Players)
-    print("Lets goooo")
     con.commit()
     con.close()

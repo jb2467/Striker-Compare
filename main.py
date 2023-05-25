@@ -55,7 +55,7 @@ def get_user_values():
         else:
             print('Not a number or not in range')
             a, b, c, d = default_values()
-    auto_commit()
+    #auto_commit()
     return a, b, c, d
 
 
