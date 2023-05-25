@@ -3,6 +3,7 @@ import git
 import schedule
 import time
 import scrapper
+from algorithm import Algorithm
 repo = git.Repo('/Users/josephbean/Personal Projects/WebScraper/Striker Compare')    
 def default_values():
     return 50,50,50,50    
@@ -51,9 +52,9 @@ def get_user_values():
                     d = 100 - c
                 else:
                     a, b, c, d = default_values()
-                    print('Not a number or not in range')
+                    print('Not a number or not in range. Will use default values (50%)')
         else:
-            print('Not a number or not in range')
+            print('Not a number or not in range. Will use default values (50%)')
             a, b, c, d = default_values()
     #auto_commit()
     return a, b, c, d
@@ -61,12 +62,14 @@ def get_user_values():
 
 def main():
     total_stats_values , per90_stats_values, playmaking_stats_values ,shooting_stats_values = get_user_values()
+    #Gave the algorithm the values it needs 
+    Algorithm(total_stats_values , per90_stats_values, playmaking_stats_values ,shooting_stats_values)
     scrapper.scrap_stats(total_stats_values , per90_stats_values, playmaking_stats_values ,shooting_stats_values)
     
 
 
 if __name__ == '__main__':
-    temp, timedOut = timedInput("Are you a user?")
+    temp, timedOut = timedInput("Are you a user? ")
     while True:
         #if you didn't time out (There was an answer), then go through the program yourself
         #else, assume it an automted task doer that is runnning the programmed
