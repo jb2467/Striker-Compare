@@ -24,14 +24,15 @@ class Player:
         self.squad = tup[3]
         self.age = tup[4]
         self.born = tup[5]
-        #
-        if',' in tup[6]:
-            temp = tup[6].split(',')
+        # Needs to get rid of the comma to allow minutes played to be used later
+        # Needs to use the list since I will be chaning the value the list holds
+        if',' in list[6]:
+            temp = list[6].split(',')
             num = ''
             for element in temp:
                 num += element
-            tup[6] = num
-        self.minutes_played = int(tup[6])
+            list[6] = num
+        self.minutes_played = int(list[6])
         self.goals = int(tup[7])
         self.assits = int(tup[8])
         self.total_shots = int(tup[9])
