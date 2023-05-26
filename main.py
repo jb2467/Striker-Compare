@@ -34,7 +34,7 @@ This function will get the user functions of the desired values for the algorith
 If the enter an incorrect input, it does to default values, but if all enter values
 are valid, will be used in the algorithm
 '''
-def get_user_values():
+def get_user_values(user):
     user_total_stats_values, timedOut1 = timedInput("Enter total stats value ")
     if (timedOut1):
         a, b, c, d = default_values()
@@ -56,14 +56,13 @@ def get_user_values():
         else:
             print('Not a number or not in range. Will use default values (50%)')
             a, b, c, d = default_values()
-    #auto_commit()
+    if not user:
+        auto_commit()
     return a, b, c, d
 
 
-def main():
-    total_stats_values , per90_stats_values, playmaking_stats_values ,shooting_stats_values = get_user_values()
-    #Gave the algorithm the values it needs 
-    Algorithm(total_stats_values , per90_stats_values, playmaking_stats_values ,shooting_stats_values)
+def main(user):
+    total_stats_values , per90_stats_values, playmaking_stats_values ,shooting_stats_values = get_user_values(user)
     scrapper.scrap_stats(total_stats_values , per90_stats_values, playmaking_stats_values ,shooting_stats_values)
     
 
@@ -74,7 +73,8 @@ if __name__ == '__main__':
         #if you didn't time out (There was an answer), then go through the program yourself
         #else, assume it an automted task doer that is runnning the programmed
         if(not timedOut):
-            main()
+            print(not timedOut)
+            main(not timedOut)
             break;
         schedule.run_pending()
         time.sleep(100)

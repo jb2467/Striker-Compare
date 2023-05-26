@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup, Comment
 import sqlite3
 from player import Player
+from algorithm import Algorithm
 
 def scrap_stats(total_stats_values , per90_stats_values, playmaking_stats_values ,shooting_stats_values):
     con = sqlite3.connect('Forward_Stats.db')
@@ -51,6 +52,7 @@ def scrap_stats(total_stats_values , per90_stats_values, playmaking_stats_values
     Players = []
     previous_player = None
     current_player = None
+    num_players = 0;
     '''
     this gets Name, Nation, position, Squad, Age, birth year, minutes, goals, assits, total shots, 
     shots on target, shot creation actions, progressive passing distance, pass completions, and pass attempts and
@@ -74,25 +76,43 @@ def scrap_stats(total_stats_values , per90_stats_values, playmaking_stats_values
             tempvar_stats.append(passing_tds[7]) # Completed passes
             tempvar_stats.append(passing_tds[8] ) #  Pass attempts
             tempvar_stats.append(passing_tds[11]) # Progressive passing distance
-                
+            
             current_player = Player(tempvar_stats)
             if previous_player == None:
                 previous_player = Player(tempvar_stats)
-                tup = previous_player.recalculate()
-                Players.append(tup)
+                current_player = None
             elif previous_player.equals(current_player):
                 previous_player.add_new_stats(current_player)
             else:
                 tup = previous_player.recalculate()
                 Players.append(tup)
                 previous_player = current_player
+    num_players+=1
     tup = previous_player.recalculate()
     Players.append(tup)
-    print(Players)
+    #print(Players)
+    algo = Algorithm(total_stats_values , per90_stats_values, playmaking_stats_values ,shooting_stats_values)
+    algo.make_dictionary(Players)
+    algo.calculate(Players,7,True,False) #gls
+    algo.calculate(Players,8,True,True) #ast
+    algo.calculate(Players,9,True,False) #sot
+    algo.calculate(Players,10,True,True) #sca
+    algo.calculate(Players,10,True,False) #sca
+    algo.calculate(Players,11,True,True) #ppd
+    algo.calculate(Players,12,False,False) 
+    algo.calculate(Players,13,False,False) 
+    algo.calculate(Players,13,False,True) 
+    algo.calculate(Players,14,False,False) 
+    algo.calculate(Players,15,False,True) 
+    temp = algo.calculate(Players,16,False,True) 
+    for element in Players:
+        if element[0] in temp:
+            element.append(temp[element[0]] * 100)    
+            print(element)
+
+    
     cur.executemany("INSERT OR REPLACE INTO stats VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                     Players)
-
-    #print(new_list)
     
     con.commit()
     con.close()

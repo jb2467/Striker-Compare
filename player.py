@@ -104,9 +104,6 @@ class Player:
             self.total_shots += other_player.total_shots
             self.cmp += other_player.cmp
             self.pass_att += other_player.pass_att
-    '''
-    Used to give the stats I want to use for the algorithm
-    '''
     def recalculate(self):
         updated_stats = []
         updated_stats.append(self.name)
@@ -121,20 +118,19 @@ class Player:
         updated_stats.append(self.shots_on_target)
         updated_stats.append(self.shot_creation_actions)
         updated_stats.append(self.progressive_passing_distance)
-        updated_stats.append(((self.shot_creation_actions)/self.minutes_played)*90)
         if self.total_shots  == 0: 
             updated_stats.append(0)
         else:
             updated_stats.append((self.shots_on_target)/self.total_shots)
+        updated_stats.append(((self.shot_creation_actions)/self.minutes_played)*90)
         updated_stats.append(((self.goals)/self.minutes_played ) * 90 )
         updated_stats.append(self.assits/self.minutes_played*90)
         if self.pass_att == 0:
             updated_stats.append(0)
         else:
             updated_stats.append(self.cmp/self.pass_att)
-        # Will be the rating 
-        updated_stats.append(0)
-        return tuple(updated_stats)
+        
+        return updated_stats
 
 
 
