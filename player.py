@@ -15,6 +15,38 @@ class Player:
     shot_creation_actions: int
     progressive_passing_distance: int
     beans:float
+    SCA90: float
+    shots_on_target_percent: float
+    goals_per_90: float
+    assits_per_90: float
+    cmp_percent: float
+
+    
+    #goals,assits, shots_on_target, shot_creation_actions, progressive_passing_distance, SCA90, shots_on_target_percent, goals_per_90, assits_per_90, cmp_percent)
+    def __init__(self, updated_stats):
+        updated = tuple(updated_stats)
+        self.name = updated_stats[0]
+        self.nation = updated_stats[1]
+        self.position = updated_stats[2]
+        self.squad = updated_stats[3]
+        self.age = updated_stats[4]
+        self.born = updated_stats[5]
+        self.minutes_played = updated_stats[6]
+        self.goals = updated_stats[7]
+        self.assits = updated_stats[8]
+        self.shots_on_target = updated_stats[9]
+        self.progressive_passing_distance = updated_stats[10]
+        self.shot_creation_actions = updated[11]
+        self.SCA90 = updated[12]
+        self.shots_on_target_percent = updated[13]
+        self.goals_per_90 = updated[14]
+        self.assits_per_90 = updated[15]
+        self.cmp_percent = updated[16]
+        self.beans = 0
+        
+
+
+
 
     def __init__(self, list):
         tup = tuple(list)
@@ -72,26 +104,38 @@ class Player:
             self.total_shots += other_player.total_shots
             self.cmp += other_player.cmp
             self.pass_att += other_player.pass_att
-    def ready_to_push(self):
-        list = [] 
-        list.append(self.name)
-        list.append(self.nation)
-        list.append(self.position)
-        list.append(self.squad)
-        list.append(self.age)
-        list.append(self.born)
-        list.append(self.minutes_played)
-        list.append(self.goals)
-        list.append(self.assits)
-        list.append(self.total_shots)
-        list.append(self.shots_on_target)
-        list.append(self.shot_creation_actions)
-        list.append(self.cmp)
-        list.append(self.pass_att)
-        list.append(self.progressive_passing_distance)
-        # will use num for the Beans rating
-        num = 0
-        list.append(num)
-        return tuple(list)
+    '''
+    Used to give the stats I want to use for the algorithm
+    '''
+    def recalculate(self):
+        updated_stats = []
+        updated_stats.append(self.name)
+        updated_stats.append(self.nation)
+        updated_stats.append(self.position)
+        updated_stats.append(self.squad)
+        updated_stats.append(self.age)
+        updated_stats.append(self.born)
+        updated_stats.append(self.minutes_played)
+        updated_stats.append(self.goals)
+        updated_stats.append(self.assits)
+        updated_stats.append(self.shots_on_target)
+        updated_stats.append(self.shot_creation_actions)
+        updated_stats.append(self.progressive_passing_distance)
+        updated_stats.append(((self.shot_creation_actions)/self.minutes_played)*90)
+        if self.total_shots  == 0: 
+            updated_stats.append(0)
+        else:
+            updated_stats.append((self.shots_on_target)/self.total_shots)
+        updated_stats.append(((self.goals)/self.minutes_played ) * 90 )
+        updated_stats.append(self.assits/self.minutes_played*90)
+        if self.pass_att == 0:
+            updated_stats.append(0)
+        else:
+            updated_stats.append(self.cmp/self.pass_att)
+        # Will be the rating 
+        updated_stats.append(0)
+        return tuple(updated_stats)
+
+
 
         
