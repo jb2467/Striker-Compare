@@ -7,14 +7,26 @@ def scrap_stats(total_stats_values , per90_stats_values, playmaking_stats_values
     con = sqlite3.connect('Forward_Stats.db')
     cur = con.cursor()
     # Make the table with only these slots
+    '''
+    Total goals
+    Total Assists
+    Total Shots on target
+    Total progressive passing distance
+    Total shot creation actions
+    Shot on target %
+    Shot creation actions per 90 minutes
+    Goals per 90 minutes
+    Assits per 90 minutes
+    Pass completions per 90 minutes 
+    '''
     cur.execute('''CREATE TABLE IF NOT EXISTS stats(Player text PRIMARY KEY,Nation text,Pos text, Squads text,Age text,
-    Born text, Mins Integer, Gls Integer, Ast Integer,  total_shots Integer, SoT Integer,  SCA Integer, pass_completions Integer, 
-    pass_attempts Integer, PPD Integer,Beans real)''')
+    Born text, Mins Integer, Gls Integer, Ast Integer, SoT Integer,  PPD Integer, SCA Integer, 
+    SoTperc float, SCA90 float, Gls90 float , AST90 float, CMPperc float, Beans real)''')
 
     # Header row
     cur.execute('''INSERT OR IGNORE INTO stats VALUES ('Name','Nation','Pos','Squad(s)','Age','Born','Min(s)',
-    'Gls','Ast','Sh (Total shots)', 'SoT (Shots on target)', 'SCA (Shot creation actions)',
-    'CMP (Pass completions)', 'PATT (Pass attempts)', 'PPD (Progressive passing distance)', 'Beans' )''')
+    'Gls','Ast', 'SoT (Shots on target)', 'PPD (Progressive passing distance)', 'SCA (Shot creation actions)',
+    'Sot% (Shot on target perecent)', 'SCA90 (Shot Creation aactions per 90)', 'GLS90 (Goals per 90)', 'AST90 (Assits per 90)','CMP% (Pass completion percentage)','Beans' )''')
 
     con.commit()
 
@@ -62,26 +74,25 @@ def scrap_stats(total_stats_values , per90_stats_values, playmaking_stats_values
             tempvar_stats.append(passing_tds[7]) # Completed passes
             tempvar_stats.append(passing_tds[8] ) #  Pass attempts
             tempvar_stats.append(passing_tds[11]) # Progressive passing distance
-
+                
             current_player = Player(tempvar_stats)
             if previous_player == None:
                 previous_player = Player(tempvar_stats)
-                tup = previous_player.ready_to_push()
+                tup = previous_player.recalculate()
                 Players.append(tup)
             elif previous_player.equals(current_player):
                 previous_player.add_new_stats(current_player)
             else:
-                tup = previous_player.ready_to_push()
+                tup = previous_player.recalculate()
                 Players.append(tup)
                 previous_player = current_player
-                # if it is a new player
-                # give players a list isntead of 16 ints and strs
-                # give Players a tuple of the stats which will be through th eplayers class
-    tup = previous_player.ready_to_push()
+    tup = previous_player.recalculate()
     Players.append(tup)
-    new_list = sorted(Players, key=lambda x: x[7])
-    print(new_list)
-    cur.executemany("INSERT OR REPLACE INTO stats VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+    print(Players)
+    cur.executemany("INSERT OR REPLACE INTO stats VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                     Players)
+
+    #print(new_list)
+    
     con.commit()
     con.close()
